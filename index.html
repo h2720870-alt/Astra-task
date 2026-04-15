@@ -1,0 +1,21 @@
+const requestNotificationPermission = () => {
+    if ('Notification' in window) {
+        if (Notification.permission === 'granted') {
+            alert('通知は既に有効です！');
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                setNotificationPermission(permission);
+                if (permission === 'granted') {
+                    alert('通知が有効になりました！');
+                    sendBrowserNotification('Astra', { body: 'これからは通知を受け取ります！' });
+                    // ★ 2秒後にダッシュボードに戻す
+                    setTimeout(() => {
+                        setView('dashboard');
+                    }, 2000);
+                }
+            });
+        } else {
+            alert('通知がブラウザで拒否されています。ブラウザの設定を確認してください。');
+        }
+    }
+};
